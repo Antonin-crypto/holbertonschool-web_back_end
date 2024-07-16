@@ -4,5 +4,3 @@ export default function taskBlock() {
 
   return [task, task2];
 }
-
-
