@@ -3,7 +3,7 @@ import Currency from './3-currency';
 export default class Princing {
   constructor(amount, currency) {
     if (typeof amount !== 'number') {
-      throw new TypeError ('amount must be a number');
+      throw new TypeError('amount must be a number');
     }
     if (!(currency instanceof Currency)) {
       throw new TypeError('currency must be a Currency');
