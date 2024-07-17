@@ -35,5 +35,4 @@ export default class Princing {
   static convertPrice(amount, conversionRate) {
     return amount * conversionRate;
   }
-
 }
