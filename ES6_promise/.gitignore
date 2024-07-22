@@ -4,3 +4,4 @@ node_modules/
 utils.js
 babel.config.js
 .eslintrc.js
+nodesource_setup.sh
