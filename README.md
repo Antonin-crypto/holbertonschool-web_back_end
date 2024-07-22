@@ -52,7 +52,7 @@ npm install
 bash
 ```bash
 npx sequelize-cli db:migrate
-```bash
+```
 Démarrez l'application :
 
 bash
