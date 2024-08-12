@@ -9,4 +9,5 @@ from typing import Tuple, Union
 
 
 def to_kv(k: str, v: Union[int, float]) -> Tuple[str, float]:
+    """the int/float v and should be annotated as a float"""
     return (k, float(v ** 2))
