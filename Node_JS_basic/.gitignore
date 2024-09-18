@@ -5,6 +5,5 @@
 3-main_1.js
 node_modules/
 *.json
-utils.js
 babel.config.js
 .eslintrc.js
