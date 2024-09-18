@@ -1,15 +1,13 @@
 import express from 'express';
-import router from './routes/index.js';
+import mapRoutes from './routes';
 
 const app = express();
-
-// Use the defined routes
-app.use('/', router);
-
-// Start the server on port 1245
 const PORT = 1245;
+
+mapRoutes(app);
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server listening on PORT ${PORT}`);
 });
 
 export default app;
+module.exports = app;
