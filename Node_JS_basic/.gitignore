@@ -1,4 +1,8 @@
-/node_modules
-
 *main.js
-
+*main_0.js
+*main_1.js
+node_modules/
+*.json
+utils.js
+babel.config.js
+.eslintrc.js
