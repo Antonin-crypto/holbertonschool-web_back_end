@@ -1,19 +1,15 @@
-const process = require('process');
+#!/usr/bin/env node
 
-console.log('Welcome to Holberton School, what is your name?');
+process.stdout.write('Welcome to Holberton School, what is your name?\n');
 
-process.stdin.setEncoding('utf8');
+process.stdin.on('readable', () => {
+  const chunk = process.stdin.read();
 
-
-process.stdin.on('data', (input) => {
-  const name = input.trim();
-  console.log(`Your name is: ${name}`);
-
-
-  if (!process.stdin.isTTY) {
-
-    console.log('This important software is now closing');
+  if (chunk) {
+    process.stdout.write(`Your name is: ${chunk}`);
   }
+});
 
-  process.exit();
+process.stdin.on('end', () => {
+  process.stdout.write('This important software is now closing\n');
 });
