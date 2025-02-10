@@ -2,6 +2,7 @@
 """
 Module Personal Data
 """
+
 import re
 
 
@@ -12,19 +13,26 @@ def filter_datum(
     separator: str
 ) -> str:
     """
+    Remplace les valeurs des champs spécifiés par `redaction` dans un message.
+
     Args:
         fields (list[str]): Liste des champs dont les valeurs doivent être
-        masquées.
+            masquées.
         redaction (str): Texte de remplacement pour obfusquer les valeurs
-        sensibles.
+            sensibles.
         message (str): Chaîne de log contenant les paires clé-valeur.
-        separator (str): Caractère séparant les paires clé-valeur dans la chaîn
+        separator (str): Caractère séparant les paires clé-valeur dans la
+        chaîne.
 
     Returns:
-        str: Le message modifié avec les valeurs des champs spécifiés remplacée
-          par `redaction`.
+        str: Le message modifié avec les valeurs des champs spécifiés
+        remplacées par `redaction`.
     """
     for field in fields:
-        message = re.sub(rf'{field}=.+?{separator}',
-                         f'{field}={redaction}{separator}', message)
+        pattern = (
+            rf'{re.escape(field)}=[^ {re.escape(separator)}]+'
+            rf'{re.escape(separator)}'
+        )
+        replacement = f'{field}={redaction}{separator}'
+        message = re.sub(pattern, replacement, message)
     return message
