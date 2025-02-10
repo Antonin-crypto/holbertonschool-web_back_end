@@ -22,13 +22,13 @@ def filter_datum(
             sensibles.
         message (str): Chaîne de log contenant les paires clé-valeur.
         separator (str): Caractère séparant les paires clé-valeur dans la
-        chaîne.
+            chaîne.
 
     Returns:
         str: Le message modifié avec les valeurs des champs spécifiés
-        remplacées par `redaction`.
+            remplacées par `redaction`.
     """
     escaped_separator = re.escape(separator)
-    pattern = rf'({"|".join(map(re.escape, fields))})=[^{escaped_separator}]*'
+    pater = rf'({ "|".join(map(re.escape, fields)) })=[^ {escaped_separator}]*'
 
-    return re.sub(pattern, lambda m: f"{m.group(1)}={redaction}", message)
+    return re.sub(pater, lambda m: f"{m.group(1)}={redaction}", message)
