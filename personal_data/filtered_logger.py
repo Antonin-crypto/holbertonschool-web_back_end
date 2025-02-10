@@ -28,11 +28,7 @@ def filter_datum(
         str: Le message modifié avec les valeurs des champs spécifiés
         remplacées par `redaction`.
     """
-    for field in fields:
-        pattern = (
-            rf'{re.escape(field)}=[^ {re.escape(separator)}]+'
-            rf'{re.escape(separator)}'
-        )
-        replacement = f'{field}={redaction}{separator}'
-        message = re.sub(pattern, replacement, message)
-    return message
+    escaped_separator = re.escape(separator)
+    pattern = rf'({"|".join(map(re.escape, fields))})=[^{escaped_separator}]*'
+
+    return re.sub(pattern, lambda m: f"{m.group(1)}={redaction}", message)
