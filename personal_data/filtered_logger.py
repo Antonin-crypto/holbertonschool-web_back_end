@@ -2,11 +2,15 @@
 """
 Module Personal Data
 """
-
 import re
 
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(
+    fields: list[str],
+    redaction: str,
+    message: str,
+    separator: str
+) -> str:
     """
     Args:
         fields (list[str]): Liste des champs dont les valeurs doivent être
@@ -20,8 +24,7 @@ def filter_datum(fields, redaction, message, separator):
         str: Le message modifié avec les valeurs des champs spécifiés remplacée
           par `redaction`.
     """
-    return re.sub(
-        rf'({"|".join(fields)})=[^{separator}]*',
-        lambda m: f"{m.group(1)}={redaction}",
-        message
-    )
+    for field in fields:
+        message = re.sub(rf'{field}=.+?{separator}',
+                         f'{field}={redaction}{separator}', message)
+    return message
