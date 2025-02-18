@@ -40,6 +40,6 @@ class SessionAuth(Auth):
         if user_id is None:
             return None
 
-        # Récupérer l'utilisateur depuis la base de données en utilisant User.get()
+        # Récupérer l'utilisateur depuis la base de données en utilisant User.
         user = User.get(user_id)
         return user
