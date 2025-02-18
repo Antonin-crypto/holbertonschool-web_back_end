@@ -1,45 +1,66 @@
 #!/usr/bin/env python3
-""" Session Authentication module """
-import uuid
-from api.v1.auth.auth import Auth
+"""
+Class to manage the API authentication
+"""
+
+import base64
+
+from .auth import Auth
+from typing import Tuple, TypeVar
 from models.user import User
+import uuid
 
 
 class SessionAuth(Auth):
-    """ Empty class that inherits from Auth """
-    user_id_by_session_id = {}  # Stockage en mémoire des sessions
+    """ Class to manage the API authentication
+    """
+    user_id_by_session_id = {}
 
     def create_session(self, user_id: str = None) -> str:
-        """ Creates a session ID for a given user_id """
+        """ creates a Session ID for a user_id
+    """
         if user_id is None or not isinstance(user_id, str):
             return None
 
-        # Générer un Session ID unique
         session_id = str(uuid.uuid4())
 
-        # Associer l'ID de session à l'ID utilisateur
         self.user_id_by_session_id[session_id] = user_id
 
         return session_id
 
     def user_id_for_session_id(self, session_id: str = None) -> str:
-        """ Retrieves a User ID based on a given Session ID """
+        """ returns a User ID based on a Session ID
+    """
         if session_id is None or not isinstance(session_id, str):
             return None
-
         return self.user_id_by_session_id.get(session_id)
 
     def current_user(self, request=None):
-        """ Returns a User instance based on the session cookie """
-        if request is None:
+        """returns a User instance based on a cookie value
+    """
+        session_cookie = self.session_cookie(request)
+        if session_cookie is None:
             return None
+        user_id = self.user_id_for_session_id(session_cookie)
+        if user_id is None:
+            return None
+        return User.get(user_id)
+
+    def destroy_session(self, request=None):
+        """deletes the user session / logout:
+    """
+        if request is None:
+            return False
 
         session_id = self.session_cookie(request)
+
+        if session_id is None:
+            return False
+
         user_id = self.user_id_for_session_id(session_id)
 
         if user_id is None:
-            return None
+            return False
 
-        # Récupérer l'utilisateur depuis la base de données en utilisant User.
-        user = User.get(user_id)
-        return user
+        del self.user_id_by_session_id[session_id]
+        return True
