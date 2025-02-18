@@ -2,6 +2,7 @@
 """ Module of authentification """
 from typing import List
 from flask import request
+import os
 
 
 class Auth:
@@ -33,3 +34,14 @@ class Auth:
     def current_user(self, request=None) -> str:
         """ Returns None """
         return None
+
+    def session_cookie(self, request=None):
+        """ Retrieves the session ID from a cookie in the request """
+        if request is None:
+            return None
+
+        session_name = os.getenv("SESSION_NAME")
+        if session_name is None:
+            return None
+
+        return request.cookies.get(session_name)
