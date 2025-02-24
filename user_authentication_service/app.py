@@ -3,7 +3,7 @@
 Basic Flask app
 """
 
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, redirect
 from auth import Auth
 
 app = Flask(__name__)
@@ -70,6 +70,24 @@ def login() -> str:
             abort(401)
     except ValueError as e:
         abort(401)
+
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> str:
+    """Logout method to destroy a session"""
+    session_id = request.cookies.get('session_id')
+
+    if not session_id:
+        abort(403)
+
+    try:
+        user = AUTH.get_user_from_session_id(session_id)
+        if not user:
+            raise ValueError("User not found")
+        AUTH.destroy_session(user.id)
+        return redirect('/'), 302
+    except ValueError:
+        abort(403)
 
 
 if __name__ == "__main__":
